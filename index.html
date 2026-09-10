@@ -239,6 +239,80 @@
     transition: background 0.5s ease, color 0.5s ease;
   }
  
+  /* ---------- customer snapshot cards ---------- */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+ 
+  @media (max-width: 720px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+ 
+  .cust-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .cust-card:hover { border-color: var(--line-strong); transform: translateY(-1px); }
+ 
+  .cust-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+ 
+  .cust-card-name {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+ 
+  .cust-card-badge {
+    flex: none;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+ 
+  .cust-card-num {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+  }
+ 
+  .cust-card-label {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    margin-top: -4px;
+  }
+ 
+  .cust-card-recent {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-top: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cust-card-recent strong { color: var(--ink); }
+ 
   /* ---------- flying bug particle (minimal, not cartoonish) ---------- */
   .particle {
     position: absolute;
@@ -496,6 +570,15 @@
             </linearGradient>
           </defs>
           <path id="orbPath" fill="url(#orbGrad)"></path>
+          <g id="orbFace">
+            <circle id="eyeL" cx="76" cy="92" r="8" fill="#14161c"/>
+            <circle id="eyeR" cx="124" cy="92" r="8" fill="#14161c"/>
+            <circle cx="78.5" cy="89.5" r="2.4" fill="#ffffff"/>
+            <circle cx="126.5" cy="89.5" r="2.4" fill="#ffffff"/>
+            <path id="browL" d="" stroke="#14161c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <path id="browR" d="" stroke="#14161c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <path id="mouthPath" d="" stroke="#14161c" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </g>
         </svg>
       </div>
  
@@ -514,6 +597,11 @@
           <span class="status-word" id="statusWord">Nominal</span>
         </div>
       </div>
+    </div>
+ 
+    <div class="cards-wrap">
+      <p class="section-label">Customer snapshot</p>
+      <div class="cards-grid" id="customerCards"></div>
     </div>
  
     <div class="table-wrap">
@@ -572,6 +660,10 @@
   const orbStop1 = document.getElementById('orbStop1');
   const orbStop2 = document.getElementById('orbStop2');
   const orbPath = document.getElementById('orbPath');
+  const mouthPath = document.getElementById('mouthPath');
+  const browL = document.getElementById('browL');
+  const browR = document.getElementById('browR');
+  const customerCardsEl = document.getElementById('customerCards');
   const resetBtn = document.getElementById('resetBtn');
   const orbWrap = document.querySelector('.orb-wrap');
   const bugModalOverlay = document.getElementById('bugModalOverlay');
@@ -777,10 +869,39 @@
     cap = cap || 40;
     const t = Math.min(total / cap, 1);
     const lerp = (a,b) => Math.round(a + (b-a) * t);
-    const c1 = { r: lerp(0x5b,0xc8), g: lerp(0x53,0x34), b: lerp(0xd6,0x2f) }; // stop1
-    const c2 = { r: lerp(0x8a,0xe0), g: lerp(0x83,0x6b), b: lerp(0xe8,0x66) }; // stop2
+    // Always a red glop — ramps from a soft salmon at low load to a deep hot red at high load.
+    const c1 = { r: lerp(0xff,0xc8), g: lerp(0x9a,0x34), b: lerp(0x8f,0x2f) }; // stop1
+    const c2 = { r: lerp(0xff,0xe0), g: lerp(0xc4,0x6b), b: lerp(0xb8,0x66) }; // stop2
     const toHex = c => '#' + [c.r,c.g,c.b].map(v=>v.toString(16).padStart(2,'0')).join('');
     return { stop1: toHex(c1), stop2: toHex(c2), t };
+  }
+ 
+  // ---- the glop's facial expression, keyed to how loaded things are ----
+  function faceForT(t){
+    if (t < 0.15) {
+      // Nominal — content, relaxed
+      return { mouth: 'M 78 122 Q 100 138, 122 122', brows: false };
+    }
+    if (t < 0.4) {
+      // Elevated — a little uneasy
+      return { mouth: 'M 80 126 Q 100 132, 120 126', brows: false };
+    }
+    if (t < 0.7) {
+      // High — worried
+      return {
+        mouth: 'M 82 130 Q 100 120, 118 130',
+        brows: true,
+        browL: 'M 66 78 L 84 84',
+        browR: 'M 134 78 L 116 84'
+      };
+    }
+    // Critical — overwhelmed, mouth agape
+    return {
+      mouth: 'M 84 126 Q 100 146, 116 126 Q 100 138, 84 126 Z',
+      brows: true,
+      browL: 'M 64 80 L 86 88',
+      browR: 'M 136 80 L 114 88'
+    };
   }
  
   function statusWordForT(t){
@@ -837,6 +958,12 @@
     statusWordEl.style.color = sw.color;
  
     orbPath.setAttribute('d', blobPath(blobSeed));
+ 
+    const face = faceForT(t);
+    mouthPath.setAttribute('d', face.mouth);
+    mouthPath.setAttribute('fill', t >= 0.7 ? '#14161c' : 'none');
+    browL.setAttribute('d', face.brows ? face.browL : '');
+    browR.setAttribute('d', face.brows ? face.browR : '');
   }
  
   function renderCustomerOptions(selectValue){
@@ -953,6 +1080,37 @@
     });
   }
  
+  function renderCustomerCards(){
+    const names = Object.keys(customers).sort((a,b) => customers[b].bugs.length - customers[a].bugs.length);
+    if (names.length === 0){
+      customerCardsEl.innerHTML = '<div class="cust-card"><div class="cust-card-label">No customers yet.</div></div>';
+      return;
+    }
+    customerCardsEl.innerHTML = names.map(name => {
+      const c = customers[name];
+      const count = c.bugs.length;
+      const { t } = colorForCount(count);
+      const sw = statusWordForT(t);
+      const latest = latestBug(c.bugs);
+      const recent = latest ? `<strong>${formatDate(latest.date)}</strong> — ${escapeHtml(latest.text)}` : 'No bugs logged yet.';
+      return `
+        <div class="cust-card" data-customer="${escapeHtml(name)}">
+          <div class="cust-card-top">
+            <span class="cust-card-name">${escapeHtml(name)}</span>
+            <span class="cust-card-badge" style="background:${sw.bg}; color:${sw.color};">${sw.text}</span>
+          </div>
+          <div class="cust-card-num">${count}</div>
+          <div class="cust-card-label">bug${count === 1 ? '' : 's'} logged</div>
+          <div class="cust-card-recent">${recent}</div>
+        </div>
+      `;
+    }).join('');
+ 
+    customerCardsEl.querySelectorAll('.cust-card[data-customer]').forEach(card => {
+      card.addEventListener('click', () => openBugModal(card.getAttribute('data-customer')));
+    });
+  }
+ 
   function escapeHtml(str){
     const div = document.createElement('div');
     div.textContent = str;
@@ -992,6 +1150,7 @@
       pulseOrb();
       updateStatus();
       renderRoster();
+      renderCustomerCards();
     }, 550);
   }
  
@@ -1032,6 +1191,7 @@
     try { localStorage.setItem(SEED_FLAG_KEY, 'true'); } catch(e) {}
     updateStatus();
     renderRoster();
+    renderCustomerCards();
     renderCustomerOptions('');
     newCustomerField.style.display = 'none';
   });
@@ -1046,6 +1206,7 @@
   loadData();
   updateStatus();
   renderRoster();
+  renderCustomerCards();
   renderCustomerOptions();
   setTodayDate();
 })();
