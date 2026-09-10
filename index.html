@@ -6,7 +6,7 @@
 <title>Bug Load — Customer Tracker</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap');
-
+ 
   :root{
     --white: #ffffff;
     --ink: #14161c;
@@ -21,9 +21,9 @@
     --radius-sm: 6px;
     --radius: 10px;
   }
-
+ 
   * { box-sizing: border-box; }
-
+ 
   html, body {
     margin: 0;
     height: 100%;
@@ -32,13 +32,13 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-
+ 
   body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
   }
-
+ 
   /* ---------- header ---------- */
   header {
     border-bottom: 1px solid var(--line);
@@ -49,13 +49,13 @@
     flex-wrap: wrap;
     gap: 12px;
   }
-
+ 
   .brand {
     display: flex;
     align-items: baseline;
     gap: 10px;
   }
-
+ 
   .brand-mark {
     width: 9px;
     height: 9px;
@@ -64,7 +64,7 @@
     transform: translateY(-2px);
     transition: background 0.6s ease;
   }
-
+ 
   h1 {
     font-family: 'Source Serif 4', Georgia, serif;
     font-weight: 600;
@@ -72,12 +72,12 @@
     margin: 0;
     letter-spacing: -0.01em;
   }
-
+ 
   header .sub {
     color: var(--ink-soft);
     font-size: 13.5px;
   }
-
+ 
   /* ---------- layout ---------- */
   main {
     flex: 1;
@@ -87,34 +87,34 @@
     width: 100%;
     margin: 0 auto;
   }
-
+ 
   @media (max-width: 880px) {
     main { grid-template-columns: 1fr; }
     .form-col { border-right: none !important; border-bottom: 1px solid var(--line); }
   }
-
+ 
   .form-col {
     padding: 32px;
     border-right: 1px solid var(--line);
   }
-
+ 
   .content-col {
     padding: 32px;
     display: flex;
     flex-direction: column;
     gap: 32px;
   }
-
+ 
   .section-label {
     font-size: 12px;
     color: var(--ink-soft);
     margin: 0 0 18px;
     font-weight: 500;
   }
-
+ 
   /* ---------- form ---------- */
   .field { margin-bottom: 18px; }
-
+ 
   .field label {
     display: block;
     font-size: 13px;
@@ -122,7 +122,7 @@
     color: var(--ink);
     margin-bottom: 6px;
   }
-
+ 
   .field input[type="text"],
   .field textarea,
   .field select {
@@ -135,7 +135,7 @@
     color: var(--ink);
     background: var(--white);
   }
-
+ 
   .field select {
     appearance: none;
     -webkit-appearance: none;
@@ -145,17 +145,17 @@
     padding-right: 30px;
     cursor: pointer;
   }
-
+ 
   .field select:invalid { color: var(--ink-soft); }
-
+ 
   .field textarea { resize: vertical; min-height: 84px; line-height: 1.5; }
-
+ 
   .field input:focus, .field textarea:focus, .field select:focus {
     outline: none;
     border-color: var(--calm);
     box-shadow: 0 0 0 3px var(--calm-soft);
   }
-
+ 
   button.submit {
     width: 100%;
     background: var(--ink);
@@ -171,14 +171,14 @@
   }
   button.submit:hover { background: #2a2d36; }
   button.submit:active { background: var(--ink); }
-
+ 
   .form-note {
     font-size: 12.5px;
     color: var(--ink-soft);
     line-height: 1.6;
     margin-top: 14px;
   }
-
+ 
   /* ---------- status row (blob + stats) ---------- */
   .status-row {
     display: grid;
@@ -188,30 +188,30 @@
     padding-bottom: 28px;
     border-bottom: 1px solid var(--line);
   }
-
+ 
   @media (max-width: 560px) {
     .status-row { grid-template-columns: 1fr; }
   }
-
+ 
   .orb-wrap {
     position: relative;
     width: 148px;
     height: 148px;
     justify-self: center;
   }
-
+ 
   #orbSvg { width: 100%; height: 100%; overflow: visible; }
-
+ 
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, auto);
     gap: 36px;
   }
-
+ 
   @media (max-width: 560px) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   }
-
+ 
   .stat .num {
     font-family: 'Source Serif 4', Georgia, serif;
     font-size: 32px;
@@ -220,13 +220,13 @@
     letter-spacing: -0.01em;
     font-variant-numeric: tabular-nums;
   }
-
+ 
   .stat .label {
     font-size: 12.5px;
     color: var(--ink-soft);
     margin-top: 6px;
   }
-
+ 
   .status-word {
     display: inline-block;
     font-size: 11.5px;
@@ -238,7 +238,7 @@
     margin-top: 6px;
     transition: background 0.5s ease, color 0.5s ease;
   }
-
+ 
   /* ---------- flying bug particle (minimal, not cartoonish) ---------- */
   .particle {
     position: absolute;
@@ -248,20 +248,20 @@
     background: var(--ink);
     pointer-events: none;
   }
-
+ 
   /* ---------- table ---------- */
   .table-wrap {
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
   }
-
+ 
   table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13.5px;
   }
-
+ 
   thead th {
     text-align: left;
     font-weight: 500;
@@ -271,21 +271,21 @@
     background: var(--surface);
     border-bottom: 1px solid var(--line);
   }
-
+ 
   th.num-col, td.num-col { text-align: right; }
-
+ 
   tbody tr { border-bottom: 1px solid var(--line); }
   tbody tr:last-child { border-bottom: none; }
-
+ 
   tbody td { padding: 12px 16px; vertical-align: top; }
-
+ 
   .cust-name { font-weight: 600; }
-
+ 
   .cust-count {
     font-variant-numeric: tabular-nums;
     font-weight: 600;
   }
-
+ 
   .bar-track {
     width: 100%;
     height: 4px;
@@ -299,20 +299,20 @@
     border-radius: 2px;
     transition: width 0.4s ease, background 0.5s ease;
   }
-
+ 
   .cust-recent {
     color: var(--ink-soft);
     font-size: 12.5px;
     line-height: 1.5;
     max-width: 320px;
   }
-
+ 
   .empty-row td {
     color: var(--ink-soft);
     font-style: italic;
     padding: 22px 16px;
   }
-
+ 
   .row-fade-in {
     animation: fadeIn 0.3s ease;
   }
@@ -320,7 +320,7 @@
     from { opacity: 0; transform: translateY(-4px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
+ 
   .content-footer {
     display: flex;
     justify-content: space-between;
@@ -328,7 +328,7 @@
     font-size: 12px;
     color: var(--ink-soft);
   }
-
+ 
   .clear-btn {
     background: none;
     border: none;
@@ -343,7 +343,7 @@
 </style>
 </head>
 <body>
-
+ 
 <header>
   <div class="brand">
     <span class="brand-mark" id="brandMark"></span>
@@ -351,9 +351,9 @@
   </div>
   <span class="sub">Per-customer bug reports, tracked live</span>
 </header>
-
+ 
 <main>
-
+ 
   <!-- LEFT: report form -->
   <section class="form-col">
     <p class="section-label">Log a bug</p>
@@ -370,6 +370,10 @@
         <input type="text" id="newCustomerName" placeholder="Priya · Acme Corp" autocomplete="off">
       </div>
       <div class="field">
+        <label for="bugDate">Date</label>
+        <input type="date" id="bugDate" required>
+      </div>
+      <div class="field">
         <label for="bugText">Description</label>
         <textarea id="bugText" placeholder="Checkout button freezes on Safari" required></textarea>
       </div>
@@ -377,10 +381,10 @@
       <p class="form-note">Each entry adds one to that customer's running total. Data is stored in this browser only.</p>
     </form>
   </section>
-
+ 
   <!-- RIGHT: status + table -->
   <section class="content-col">
-
+ 
     <div class="status-row">
       <div class="orb-wrap">
         <svg id="orbSvg" viewBox="0 0 200 200">
@@ -393,7 +397,7 @@
           <path id="orbPath" fill="url(#orbGrad)"></path>
         </svg>
       </div>
-
+ 
       <div class="stats-grid">
         <div class="stat">
           <div class="num" id="totalNumber">0</div>
@@ -410,14 +414,14 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
             <th>Customer</th>
             <th class="num-col">Bugs</th>
-            <th>Most recent</th>
+            <th>Latest report</th>
           </tr>
         </thead>
         <tbody id="rosterBody">
@@ -425,24 +429,25 @@
         </tbody>
       </table>
     </div>
-
+ 
     <div class="content-footer">
       <span>Stored locally in this browser</span>
       <button class="clear-btn" id="resetBtn">Clear all data</button>
     </div>
-
+ 
   </section>
-
+ 
 </main>
-
+ 
 <script>
 (function(){
   const STORAGE_KEY = 'bug-load-tracker:customers';
-
+ 
   const feedForm = document.getElementById('feedForm');
   const customerSelect = document.getElementById('customerSelect');
   const newCustomerField = document.getElementById('newCustomerField');
   const newCustomerNameInput = document.getElementById('newCustomerName');
+  const bugDateInput = document.getElementById('bugDate');
   const bugTextInput = document.getElementById('bugText');
   const rosterBody = document.getElementById('rosterBody');
   const totalNumberEl = document.getElementById('totalNumber');
@@ -455,23 +460,173 @@
   const orbPath = document.getElementById('orbPath');
   const resetBtn = document.getElementById('resetBtn');
   const orbWrap = document.querySelector('.orb-wrap');
-
+ 
+  // Bugs extracted from the FarmERP support chat history, first-reported dates.
+  const SEED_DATA = {
+    "Jasmine": [
+      ["2026-03-04","Opening balance ignored; only input credits deducted"],
+      ["2026-03-04","Overall balance ₹12,630 but payout deducted only ₹6,680"],
+      ["2026-03-18","No warehouse moisture deduction (3%) applied before payout"],
+      ["2026-03-18","Deduction logic inconsistent across crops"],
+      ["2026-03-18","Weekly payout quantities didn't match expected values"],
+      ["2026-04-21","Frangipani payout: moisture deduction not applied"],
+      ["2026-04-13","Rose bourboniana payout: moisture deduction missed one week"],
+      ["2026-03-24","Payout amount wrong: ₹4,974 expected, showed ₹7,058"],
+      ["2026-03-24","Two farmers' quantity doubled in payout"],
+      ["2026-05-27","Payout showed data from 1970 instead of selected period"],
+      ["2026-05-27","Payout Excel total in wrong column, quantity mismatched"],
+      ["2026-05-28","Rose bourboniana Excel payout report error recurred"],
+      ["2026-07-07","Rose bourboniana payout showed 50 farmers vs actual 35"],
+      ["2026-06-09","Sambac payout vs bank report mismatch for one farmer"],
+      ["2026-06-10","Farmer's 1.35 kg missing from payout"],
+      ["2026-08-18","CBE Grandiflorum payout ₹756.7 short"],
+      ["2026-08-18","Seedlings loan total mismatch of ₹9,300"],
+      ["2026-08-18","Farmer accidentally deleted, needed re-adding"],
+      ["2026-07-28","CBE NPOP payout showed ₹87,316 instead of ₹88,241.8"],
+      ["2026-07-28","Granduflorum payout total kept changing unexpectedly"],
+      ["2026-09-08","Coimbatore Rose bourboniana payout ₹16 short"],
+      ["2026-09-08","Grandiflorum payout qty off by 0.17 kg"],
+      ["2026-09-08","2% moisture entered by mistake by warehouse team"],
+      ["2026-04-14","Rose payout: seedlings/loan amount not deducted"],
+      ["2026-04-14","Opening Rose payout threw an error screen"],
+      ["2026-04-14","Farmers stuck in 'Edit Pending' inside Rose payout"],
+      ["2026-03-11","Payout not showing at all for Dharani variety"],
+      ["2026-03-11","Payout weight reflected bag-weight deduction only"],
+      ["2026-07-20","Trip final quantity showed -131.94 kg (negative)"],
+      ["2026-07-20","Trip total showed 122.140 kg instead of 122.72 kg"],
+      ["2026-07-21","Corrected weight in procurement report not in payout"],
+      ["2026-07-22","Trip batch page qty inconsistent with payout qty"],
+      ["2026-07-23","Sambac trip: 3% deduction skipped in manual correction (68 entries)"],
+      ["2026-06-10","Trip batch approved after payout already run"],
+      ["2026-02-10","Procurement report showed only one aggregated period"],
+      ["2026-02-10","Excel export showed bank-statement data instead of procurement"],
+      ["2026-02-10","Testing/dummy records in live procurement report"],
+      ["2026-02-12","No total row at bottom of bank/payout Excel exports"],
+      ["2026-02-11","PDF/Excel export access missing for Credit Report"],
+      ["2026-02-23","Davana procurement report didn't match trip batches"],
+      ["2026-02-24","Vetiver soil/sand % and qty not reflected in records"],
+      ["2026-02-24","Wrong values in PDF/Excel exports"],
+      ["2026-02-24","Column naming confusion in Trip Batch/Procurement report"],
+      ["2026-07-07","Procurement report not generated for a date range/crop"],
+      ["2026-07-07","Procurement dashboard 52 farmers vs Excel export only 43"],
+      ["2026-07-07","Business Location filter missing in procurement report"],
+      ["2026-07-08","Opening procurement report detail threw error for dashboard role"],
+      ["2026-07-14","Business Location filter missing from Master > Farmers"],
+      ["2026-07-14","No option to deactivate a user (only password reset)"],
+      ["2026-07-16","Farmers export downloaded as CSV instead of Excel"],
+      ["2026-07-16","Export All failed, showed serial numbers instead of data"],
+      ["2026-08-07","Credit report download error despite PDF succeeding"],
+      ["2026-07-29","Printing final bill (overall PDF) threw a server error"],
+      ["2026-08-04","Old bill format still used for Sambac, Tuberose, Rose Centifolia"],
+      ["2026-01-30","IFSC code missing from bank report"],
+      ["2026-01-30","Bank report included credit info that shouldn't be there"],
+      ["2026-02-10","Bank statement missing account number/branch/IFSC for some farmers"],
+      ["2026-02-10","Bank report showing wrong bank details for all farmers"],
+      ["2026-02-11","App-entered bank details not auto-linked to Bank Master"],
+      ["2026-02-20","Payout report displayed a different, incorrect IFSC code"],
+      ["2026-07-20","Duplicate account number blocked a pending Vetiver payout"],
+      ["2026-07-28","Extra leading space in bank account caused wrong digit count in export"],
+      ["2026-03-19","TMB bank missing from bank list"],
+      ["2026-04-01","Duplicate farmer record — same farmer approved twice"],
+      ["2026-07-02","New farmer codes didn't follow last-code+1 sequencing"],
+      ["2026-07-02","No duplicate pre-check before generating new farmer code"],
+      ["2026-07-16","No duplicate validation for farmers added via web-portal"],
+      ["2026-07-16","Aadhaar numbers treated as different due to spacing"],
+      ["2026-03-30","Newly assigned farmers not showing; old FGI farmers persisted"],
+      ["2026-04-01","Rose Bourboniana farmer count showed 183 instead of 53"],
+      ["2026-04-01","All farmers listed in Add Farmer section for every user"],
+      ["2026-02-11","Users could view all farmers instead of only their own"],
+      ["2026-06-05","Warehouse trip batches showed org-wide instead of own team"],
+      ["2026-05-11","'No plots found' error for mismatched crop/season"],
+      ["2026-05-11","Inconsistent farmer list visibility between executives"],
+      ["2026-05-21","New Collection Agent role users had no farmer list"],
+      ["2026-05-22","Perimeter-mapping screen went blank with 'clear cache' prompt"],
+      ["2026-05-08","Could not assign a farmer directly to Senior FE or Manager"],
+      ["2026-06-09","Approved farmer bank-detail edits still showing as Pending"],
+      ["2026-05-13","Duplicate farmer record, one stuck pending after other approved"],
+      ["2026-07-24","Assigned farmers showed zero the next morning"],
+      ["2026-07-01","Approved farmers not visible in manager's farmer list"],
+      ["2026-09-04","Only Rose Bourboniana farmers openable; Grandi/Sambac wouldn't open"],
+      ["2026-01-30","Warehouse confirmation stuck, blocking distillation batch closure"],
+      ["2026-02-04","Approved input/seed/fertilizer advance requests couldn't be issued"],
+      ["2026-02-18","Could start trip but not select farmer — 'no plot available'"],
+      ["2026-02-18","No transaction-level visibility at the warehouse level"],
+      ["2026-02-22","Trips not appearing in the Approval queue"],
+      ["2026-02-23","Prior-day data showing 0 quantity on web dashboard"],
+      ["2026-03-10","Trip batch data from mobile not reflecting on web"],
+      ["2026-03-11","User ID intermittently disappearing from filter dropdown"],
+      ["2026-03-12","Trip entered, weights logged, never showed in history"],
+      ["2026-07-07","Trip batch closed on mobile but dashboard showed pending"],
+      ["2026-07-20","Total collection weight disappeared from dashboard"],
+      ["2026-07-21","Farmer-level trip data differed from aggregated totals"],
+      ["2026-07-24","'End Trip' option not visible to the actual collecting executive"],
+      ["2026-09-09","Single trip auto-split into individual trips per farmer"],
+      ["2026-07-13","Net weight entries needed correcting to 0.00 kg"],
+      ["2026-08-04","Edited starting-KM value didn't save"],
+      ["2026-02-17","Perimeter mapping showing more acres than actual"],
+      ["2026-08-07","Fallow land validation error thrown incorrectly for Palmarosa"],
+      ["2026-05-08","'No farmer list' tied to plot/season mismatches"],
+      ["2026-02-02","SMS not sent to farmer after collection synced"],
+      ["2026-08-13","Specific farmers intermittently not receiving SMS"],
+      ["2026-08-22","Mass SMS delivery failure — provider credit exhausted"],
+      ["2026-09-09","~90% SMS delivery rate with recurring carrier failure codes"],
+      ["2026-01-30","Quality confirmation step missing from SF view"],
+      ["2026-02-02","Finance role missing several permissions"],
+      ["2026-03-09","Payout option missing for the Manager role"],
+      ["2026-04-08","Manager role had no access to the Contracts module"],
+      ["2026-03-19","Field Executive filter still missing from Farmer Pre-Approval"],
+      ["2026-02-26","Edit trip batch quantity redirected to dashboard home"],
+      ["2026-06-05","Manager-created accounts couldn't create trips"],
+      ["2026-08-03","KM-editing permission needed for the Head role"],
+      ["2026-06-24","Business Location filter unusable by roles without a location"],
+      ["2026-03-20","'Sambac' crop missing from crop list when adding a village"],
+      ["2026-03-24","Farmer nickname field incorrectly accepted numbers"],
+      ["2026-03-24","Aadhaar/bank account fields missing validation rules"],
+      ["2026-03-24","Gender, current crop, livestock fields not capturable"],
+      ["2026-07-16","Village updated but farmer code not auto-generated"],
+      ["2026-07-15","Farmer code failed to generate — blank Village, no error shown"],
+      ["2026-04-17","Vehicle field was free-text instead of a dropdown"],
+      ["2026-07-20","Farmers showing wrong location's farmer codes"],
+      ["2026-06-08","Taluk selection control not working"],
+      ["2026-03-26","Vetiver crop activities still not configured as promised"],
+      ["2026-06-29","Live customization/testing happening directly on production"],
+      ["2026-09-02","UAT environment requested for over a year before provisioned"],
+      ["2026-06-24","'Duplicate' error shown for legitimate new records"],
+      ["2026-08-10","Generic server error screens appearing intermittently"]
+    ]
+  };
+ 
   let customers = {};
-
+ 
+  function buildSeedCustomers(){
+    const seeded = {};
+    Object.keys(SEED_DATA).forEach(name => {
+      seeded[name] = {
+        bugs: SEED_DATA[name].map(([date, text]) => ({ date, text }))
+      };
+    });
+    return seeded;
+  }
+ 
   function loadData(){
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      customers = raw ? JSON.parse(raw) : {};
-    } catch(e) { customers = {}; }
+      if (raw) {
+        customers = JSON.parse(raw);
+      } else {
+        customers = buildSeedCustomers();
+        saveData();
+      }
+    } catch(e) { customers = buildSeedCustomers(); }
   }
   function saveData(){
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(customers)); } catch(e) {}
   }
-
+ 
   function totalBugs(){
-    return Object.values(customers).reduce((s,c) => s + c.count, 0);
+    return Object.values(customers).reduce((s,c) => s + c.bugs.length, 0);
   }
-
+ 
   // ---- color ramp: calm indigo -> alert red, based on total load ----
   function colorForCount(total, cap){
     cap = cap || 40;
@@ -482,14 +637,14 @@
     const toHex = c => '#' + [c.r,c.g,c.b].map(v=>v.toString(16).padStart(2,'0')).join('');
     return { stop1: toHex(c1), stop2: toHex(c2), t };
   }
-
+ 
   function statusWordForT(t){
     if (t < 0.15) return { text: 'Nominal', bg: 'var(--calm-soft)', color: 'var(--calm)' };
     if (t < 0.4)  return { text: 'Elevated', bg: '#f2eefc', color: '#6b4fc9' };
     if (t < 0.7)  return { text: 'High', bg: '#fdf1e4', color: '#b56a1a' };
     return { text: 'Critical', bg: 'var(--hot-soft)', color: 'var(--hot)' };
   }
-
+ 
   // ---- organic blob path generator (deterministic per-count wobble) ----
   function blobPath(seedOffset){
     const cx = 100, cy = 100, baseR = 78;
@@ -513,62 +668,62 @@
     d += 'Z';
     return d;
   }
-
+ 
   let blobSeed = 0;
-
+ 
   function updateStatus(){
     const total = totalBugs();
     const names = Object.keys(customers);
     const custCount = names.length;
     const avg = custCount ? (total / custCount) : 0;
-
+ 
     totalNumberEl.textContent = total;
     customerCountEl.textContent = custCount;
     avgNumberEl.textContent = avg.toFixed(1).replace(/\.0$/, '');
-
+ 
     const { stop1, stop2, t } = colorForCount(total);
     orbStop1.setAttribute('stop-color', stop1);
     orbStop2.setAttribute('stop-color', stop2);
     brandMark.style.background = stop1;
-
+ 
     const sw = statusWordForT(t);
     statusWordEl.textContent = sw.text;
     statusWordEl.style.background = sw.bg;
     statusWordEl.style.color = sw.color;
-
+ 
     orbPath.setAttribute('d', blobPath(blobSeed));
   }
-
+ 
   function renderCustomerOptions(selectValue){
     const names = Object.keys(customers).sort((a,b) => a.localeCompare(b));
     const current = selectValue !== undefined ? selectValue : customerSelect.value;
     customerSelect.innerHTML = '';
-
+ 
     const placeholder = document.createElement('option');
     placeholder.value = '';
     placeholder.textContent = 'Select a customer…';
     placeholder.disabled = true;
     customerSelect.appendChild(placeholder);
-
+ 
     names.forEach(name => {
       const opt = document.createElement('option');
       opt.value = name;
       opt.textContent = name;
       customerSelect.appendChild(opt);
     });
-
+ 
     const newOpt = document.createElement('option');
     newOpt.value = '__new__';
     newOpt.textContent = '+ Add new customer';
     customerSelect.appendChild(newOpt);
-
+ 
     if (current && (names.includes(current) || current === '__new__')) {
       customerSelect.value = current;
     } else {
       placeholder.selected = true;
     }
   }
-
+ 
   customerSelect.addEventListener('change', () => {
     if (customerSelect.value === '__new__') {
       newCustomerField.style.display = 'block';
@@ -580,24 +735,37 @@
       newCustomerNameInput.value = '';
     }
   });
-
+ 
+  function formatDate(iso){
+    if (!iso) return '';
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+ 
+  function latestBug(bugs){
+    if (!bugs.length) return null;
+    return bugs.reduce((latest, b) => (!latest || b.date > latest.date) ? b : latest, null);
+  }
+ 
   function renderRoster(){
-    const names = Object.keys(customers).sort((a,b) => customers[b].count - customers[a].count);
+    const names = Object.keys(customers).sort((a,b) => customers[b].bugs.length - customers[a].bugs.length);
     if (names.length === 0){
       rosterBody.innerHTML = '<tr class="empty-row"><td colspan="3">No bugs logged yet.</td></tr>';
       return;
     }
-    const maxCount = Math.max(...names.map(n => customers[n].count));
+    const maxCount = Math.max(...names.map(n => customers[n].bugs.length));
     rosterBody.innerHTML = names.map(name => {
       const c = customers[name];
-      const pct = Math.max(6, Math.round((c.count / maxCount) * 100));
-      const { stop1 } = colorForCount(c.count);
-      const recent = c.recent.length ? escapeHtml(c.recent[c.recent.length - 1]) : '—';
+      const count = c.bugs.length;
+      const pct = Math.max(6, Math.round((count / maxCount) * 100));
+      const { stop1 } = colorForCount(count);
+      const latest = latestBug(c.bugs);
+      const recent = latest ? `<strong>${formatDate(latest.date)}</strong> — ${escapeHtml(latest.text)}` : '—';
       return `
         <tr>
           <td class="cust-name">${escapeHtml(name)}</td>
           <td class="num-col cust-count">
-            ${c.count}
+            ${count}
             <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${stop1};"></div></div>
           </td>
           <td class="cust-recent">${recent}</td>
@@ -605,40 +773,40 @@
       `;
     }).join('');
   }
-
+ 
   function escapeHtml(str){
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
   }
-
+ 
   function pulseOrb(){
     orbWrap.style.transition = 'transform 0.18s ease';
     orbWrap.style.transform = 'scale(1.06)';
     setTimeout(() => { orbWrap.style.transform = 'scale(1)'; }, 180);
   }
-
+ 
   function spawnParticle(){
     const rect = orbWrap.getBoundingClientRect();
     const formRect = feedForm.getBoundingClientRect();
     const particle = document.createElement('div');
     particle.className = 'particle';
     document.body.appendChild(particle);
-
+ 
     const startX = formRect.right - 20;
     const startY = formRect.top + formRect.height / 2;
     const endX = rect.left + rect.width / 2;
     const endY = rect.top + rect.height / 2;
-
+ 
     particle.style.left = startX + 'px';
     particle.style.top = startY + 'px';
     particle.style.transition = 'transform 0.55s cubic-bezier(.4,0,.2,1), opacity 0.2s ease 0.4s';
-
+ 
     requestAnimationFrame(() => {
       particle.style.transform = `translate(${endX - startX}px, ${endY - startY}px) scale(0.4)`;
       particle.style.opacity = '0';
     });
-
+ 
     setTimeout(() => {
       particle.remove();
       blobSeed += 0.6;
@@ -647,10 +815,10 @@
       renderRoster();
     }, 550);
   }
-
+ 
   feedForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
+ 
     let name;
     if (customerSelect.value === '__new__') {
       name = newCustomerNameInput.value.trim();
@@ -658,24 +826,24 @@
       name = customerSelect.value;
     }
     const bug = bugTextInput.value.trim();
-    if (!name || !bug) return;
-
-    if (!customers[name]) customers[name] = { count: 0, recent: [] };
-    customers[name].count += 1;
-    customers[name].recent.push(bug);
-    if (customers[name].recent.length > 10) customers[name].recent = customers[name].recent.slice(-10);
-
+    const date = bugDateInput.value;
+    if (!name || !bug || !date) return;
+ 
+    if (!customers[name]) customers[name] = { bugs: [] };
+    customers[name].bugs.push({ date, text: bug });
+ 
     saveData();
     spawnParticle();
-
+ 
     renderCustomerOptions(name);
     newCustomerField.style.display = 'none';
     newCustomerNameInput.required = false;
     newCustomerNameInput.value = '';
     bugTextInput.value = '';
+    setTodayDate();
     bugTextInput.focus();
   });
-
+ 
   resetBtn.addEventListener('click', () => {
     if (!confirm('Clear all customers and bug counts? This cannot be undone.')) return;
     customers = {};
@@ -686,13 +854,22 @@
     renderCustomerOptions('');
     newCustomerField.style.display = 'none';
   });
-
+ 
+  function setTodayDate(){
+    const today = new Date();
+    const iso = today.toISOString().slice(0, 10);
+    bugDateInput.value = iso;
+    bugDateInput.max = iso;
+  }
+ 
   loadData();
   updateStatus();
   renderRoster();
   renderCustomerOptions();
+  setTodayDate();
 })();
 </script>
-
+ 
 </body>
 </html>
+ 
