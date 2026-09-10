@@ -702,6 +702,7 @@
     ]
   };
  
+  const SEED_FLAG_KEY = 'bug-load-tracker:seed-v1-applied';
   let customers = {};
  
   function buildSeedCustomers(){
@@ -714,16 +715,37 @@
     return seeded;
   }
  
+  function mergeSeedData(){
+    const seeded = buildSeedCustomers();
+    Object.keys(seeded).forEach(name => {
+      if (!customers[name]) {
+        customers[name] = { bugs: [] };
+      }
+      const existingKeys = new Set(customers[name].bugs.map(b => b.date + '|' + b.text));
+      seeded[name].bugs.forEach(bug => {
+        const key = bug.date + '|' + bug.text;
+        if (!existingKeys.has(key)) {
+          customers[name].bugs.push(bug);
+          existingKeys.add(key);
+        }
+      });
+    });
+  }
+ 
   function loadData(){
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        customers = JSON.parse(raw);
-      } else {
-        customers = buildSeedCustomers();
-        saveData();
-      }
-    } catch(e) { customers = buildSeedCustomers(); }
+      customers = raw ? JSON.parse(raw) : {};
+    } catch(e) { customers = {}; }
+ 
+    let seedApplied = false;
+    try { seedApplied = localStorage.getItem(SEED_FLAG_KEY) === 'true'; } catch(e) {}
+ 
+    if (!seedApplied) {
+      mergeSeedData();
+      saveData();
+      try { localStorage.setItem(SEED_FLAG_KEY, 'true'); } catch(e) {}
+    }
   }
   function saveData(){
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(customers)); } catch(e) {}
