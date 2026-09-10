@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bug Load — Customer Tracker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap');
+
+  :root{
+    --white: #ffffff;
+    --ink: #14161c;
+    --ink-soft: #565b68;
+    --line: #e4e5ea;
+    --line-strong: #cfd1da;
+    --surface: #fafafb;
+    --calm: #5b53d6;
+    --calm-soft: #efeefc;
+    --hot: #c8342f;
+    --hot-soft: #fbeceb;
+    --radius-sm: 6px;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--white);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    border-bottom: 1px solid var(--line);
+    padding: 22px 32px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .brand-mark {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--calm);
+    transform: translateY(-2px);
+    transition: background 0.6s ease;
+  }
+
+  h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: 21px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  header .sub {
+    color: var(--ink-soft);
+    font-size: 13.5px;
+  }
+
+  /* ---------- layout ---------- */
+  main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 880px) {
+    main { grid-template-columns: 1fr; }
+    .form-col { border-right: none !important; border-bottom: 1px solid var(--line); }
+  }
+
+  .form-col {
+    padding: 32px;
+    border-right: 1px solid var(--line);
+  }
+
+  .content-col {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin: 0 0 18px;
+    font-weight: 500;
+  }
+
+  /* ---------- form ---------- */
+  .field { margin-bottom: 18px; }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .field input[type="text"],
+  .field textarea,
+  .field select {
+    width: 100%;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--white);
+  }
+
+  .field select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0 L5 6 L10 0 Z' fill='%23565b68'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 30px;
+    cursor: pointer;
+  }
+
+  .field select:invalid { color: var(--ink-soft); }
+
+  .field textarea { resize: vertical; min-height: 84px; line-height: 1.5; }
+
+  .field input:focus, .field textarea:focus, .field select:focus {
+    outline: none;
+    border-color: var(--calm);
+    box-shadow: 0 0 0 3px var(--calm-soft);
+  }
+
+  button.submit {
+    width: 100%;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 11px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  button.submit:hover { background: #2a2d36; }
+  button.submit:active { background: var(--ink); }
+
+  .form-note {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-top: 14px;
+  }
+
+  /* ---------- status row (blob + stats) ---------- */
+  .status-row {
+    display: grid;
+    grid-template-columns: 168px 1fr;
+    gap: 32px;
+    align-items: center;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (max-width: 560px) {
+    .status-row { grid-template-columns: 1fr; }
+  }
+
+  .orb-wrap {
+    position: relative;
+    width: 148px;
+    height: 148px;
+    justify-self: center;
+  }
+
+  #orbSvg { width: 100%; height: 100%; overflow: visible; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 36px;
+  }
+
+  @media (max-width: 560px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  }
+
+  .stat .num {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat .label {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  .status-word {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 100px;
+    background: var(--calm-soft);
+    color: var(--calm);
+    margin-top: 6px;
+    transition: background 0.5s ease, color 0.5s ease;
+  }
+
+  /* ---------- flying bug particle (minimal, not cartoonish) ---------- */
+  .particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ink);
+    pointer-events: none;
+  }
+
+  /* ---------- table ---------- */
+  .table-wrap {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 500;
+    color: var(--ink-soft);
+    font-size: 12px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+
+  th.num-col, td.num-col { text-align: right; }
+
+  tbody tr { border-bottom: 1px solid var(--line); }
+  tbody tr:last-child { border-bottom: none; }
+
+  tbody td { padding: 12px 16px; vertical-align: top; }
+
+  .cust-name { font-weight: 600; }
+
+  .cust-count {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+
+  .bar-track {
+    width: 100%;
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.4s ease, background 0.5s ease;
+  }
+
+  .cust-recent {
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    line-height: 1.5;
+    max-width: 320px;
+  }
+
+  .empty-row td {
+    color: var(--ink-soft);
+    font-style: italic;
+    padding: 22px 16px;
+  }
+
+  .row-fade-in {
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .content-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  .clear-btn {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .clear-btn:hover { color: var(--hot); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="brand-mark" id="brandMark"></span>
+    <h1>Bug Load</h1>
+  </div>
+  <span class="sub">Per-customer bug reports, tracked live</span>
+</header>
+
+<main>
+
+  <!-- LEFT: report form -->
+  <section class="form-col">
+    <p class="section-label">Log a bug</p>
+    <form id="feedForm">
+      <div class="field">
+        <label for="customerSelect">Customer</label>
+        <select id="customerSelect" required>
+          <option value="" disabled selected>Select a customer…</option>
+          <option value="__new__">+ Add new customer</option>
+        </select>
+      </div>
+      <div class="field" id="newCustomerField" style="display:none;">
+        <label for="newCustomerName">New customer name</label>
+        <input type="text" id="newCustomerName" placeholder="Priya · Acme Corp" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="bugText">Description</label>
+        <textarea id="bugText" placeholder="Checkout button freezes on Safari" required></textarea>
+      </div>
+      <button type="submit" class="submit">Log bug</button>
+      <p class="form-note">Each entry adds one to that customer's running total. Data is stored in this browser only.</p>
+    </form>
+  </section>
+
+  <!-- RIGHT: status + table -->
+  <section class="content-col">
+
+    <div class="status-row">
+      <div class="orb-wrap">
+        <svg id="orbSvg" viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="orbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop id="orbStop1" offset="0%" stop-color="#5b53d6"/>
+              <stop id="orbStop2" offset="100%" stop-color="#8a83e8"/>
+            </linearGradient>
+          </defs>
+          <path id="orbPath" fill="url(#orbGrad)"></path>
+        </svg>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="num" id="totalNumber">0</div>
+          <div class="label">Total bugs logged</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="customerCount">0</div>
+          <div class="label">Customers affected</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="avgNumber">0</div>
+          <div class="label">Avg. per customer</div>
+          <span class="status-word" id="statusWord">Nominal</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th class="num-col">Bugs</th>
+            <th>Most recent</th>
+          </tr>
+        </thead>
+        <tbody id="rosterBody">
+          <tr class="empty-row"><td colspan="3">No bugs logged yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content-footer">
+      <span>Stored locally in this browser</span>
+      <button class="clear-btn" id="resetBtn">Clear all data</button>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'bug-load-tracker:customers';
+
+  const feedForm = document.getElementById('feedForm');
+  const customerSelect = document.getElementById('customerSelect');
+  const newCustomerField = document.getElementById('newCustomerField');
+  const newCustomerNameInput = document.getElementById('newCustomerName');
+  const bugTextInput = document.getElementById('bugText');
+  const rosterBody = document.getElementById('rosterBody');
+  const totalNumberEl = document.getElementById('totalNumber');
+  const customerCountEl = document.getElementById('customerCount');
+  const avgNumberEl = document.getElementById('avgNumber');
+  const statusWordEl = document.getElementById('statusWord');
+  const brandMark = document.getElementById('brandMark');
+  const orbStop1 = document.getElementById('orbStop1');
+  const orbStop2 = document.getElementById('orbStop2');
+  const orbPath = document.getElementById('orbPath');
+  const resetBtn = document.getElementById('resetBtn');
+  const orbWrap = document.querySelector('.orb-wrap');
+
+  let customers = {};
+
+  function loadData(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      customers = raw ? JSON.parse(raw) : {};
+    } catch(e) { customers = {}; }
+  }
+  function saveData(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(customers)); } catch(e) {}
+  }
+
+  function totalBugs(){
+    return Object.values(customers).reduce((s,c) => s + c.count, 0);
+  }
+
+  // ---- color ramp: calm indigo -> alert red, based on total load ----
+  function colorForCount(total, cap){
+    cap = cap || 40;
+    const t = Math.min(total / cap, 1);
+    const lerp = (a,b) => Math.round(a + (b-a) * t);
+    const c1 = { r: lerp(0x5b,0xc8), g: lerp(0x53,0x34), b: lerp(0xd6,0x2f) }; // stop1
+    const c2 = { r: lerp(0x8a,0xe0), g: lerp(0x83,0x6b), b: lerp(0xe8,0x66) }; // stop2
+    const toHex = c => '#' + [c.r,c.g,c.b].map(v=>v.toString(16).padStart(2,'0')).join('');
+    return { stop1: toHex(c1), stop2: toHex(c2), t };
+  }
+
+  function statusWordForT(t){
+    if (t < 0.15) return { text: 'Nominal', bg: 'var(--calm-soft)', color: 'var(--calm)' };
+    if (t < 0.4)  return { text: 'Elevated', bg: '#f2eefc', color: '#6b4fc9' };
+    if (t < 0.7)  return { text: 'High', bg: '#fdf1e4', color: '#b56a1a' };
+    return { text: 'Critical', bg: 'var(--hot-soft)', color: 'var(--hot)' };
+  }
+
+  // ---- organic blob path generator (deterministic per-count wobble) ----
+  function blobPath(seedOffset){
+    const cx = 100, cy = 100, baseR = 78;
+    const points = 10;
+    let d = '';
+    const coords = [];
+    for (let i = 0; i < points; i++){
+      const angle = (Math.PI * 2 * i) / points;
+      const wobble = Math.sin(i * 1.7 + seedOffset) * 8 + Math.cos(i * 0.9 + seedOffset * 1.3) * 5;
+      const r = baseR + wobble;
+      coords.push([cx + Math.cos(angle) * r, cy + Math.sin(angle) * r]);
+    }
+    d += `M ${coords[0][0]} ${coords[0][1]} `;
+    for (let i = 0; i < points; i++){
+      const curr = coords[i];
+      const next = coords[(i+1) % points];
+      const mx = (curr[0] + next[0]) / 2;
+      const my = (curr[1] + next[1]) / 2;
+      d += `Q ${curr[0]} ${curr[1]}, ${mx} ${my} `;
+    }
+    d += 'Z';
+    return d;
+  }
+
+  let blobSeed = 0;
+
+  function updateStatus(){
+    const total = totalBugs();
+    const names = Object.keys(customers);
+    const custCount = names.length;
+    const avg = custCount ? (total / custCount) : 0;
+
+    totalNumberEl.textContent = total;
+    customerCountEl.textContent = custCount;
+    avgNumberEl.textContent = avg.toFixed(1).replace(/\.0$/, '');
+
+    const { stop1, stop2, t } = colorForCount(total);
+    orbStop1.setAttribute('stop-color', stop1);
+    orbStop2.setAttribute('stop-color', stop2);
+    brandMark.style.background = stop1;
+
+    const sw = statusWordForT(t);
+    statusWordEl.textContent = sw.text;
+    statusWordEl.style.background = sw.bg;
+    statusWordEl.style.color = sw.color;
+
+    orbPath.setAttribute('d', blobPath(blobSeed));
+  }
+
+  function renderCustomerOptions(selectValue){
+    const names = Object.keys(customers).sort((a,b) => a.localeCompare(b));
+    const current = selectValue !== undefined ? selectValue : customerSelect.value;
+    customerSelect.innerHTML = '';
+
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = 'Select a customer…';
+    placeholder.disabled = true;
+    customerSelect.appendChild(placeholder);
+
+    names.forEach(name => {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      customerSelect.appendChild(opt);
+    });
+
+    const newOpt = document.createElement('option');
+    newOpt.value = '__new__';
+    newOpt.textContent = '+ Add new customer';
+    customerSelect.appendChild(newOpt);
+
+    if (current && (names.includes(current) || current === '__new__')) {
+      customerSelect.value = current;
+    } else {
+      placeholder.selected = true;
+    }
+  }
+
+  customerSelect.addEventListener('change', () => {
+    if (customerSelect.value === '__new__') {
+      newCustomerField.style.display = 'block';
+      newCustomerNameInput.required = true;
+      newCustomerNameInput.focus();
+    } else {
+      newCustomerField.style.display = 'none';
+      newCustomerNameInput.required = false;
+      newCustomerNameInput.value = '';
+    }
+  });
+
+  function renderRoster(){
+    const names = Object.keys(customers).sort((a,b) => customers[b].count - customers[a].count);
+    if (names.length === 0){
+      rosterBody.innerHTML = '<tr class="empty-row"><td colspan="3">No bugs logged yet.</td></tr>';
+      return;
+    }
+    const maxCount = Math.max(...names.map(n => customers[n].count));
+    rosterBody.innerHTML = names.map(name => {
+      const c = customers[name];
+      const pct = Math.max(6, Math.round((c.count / maxCount) * 100));
+      const { stop1 } = colorForCount(c.count);
+      const recent = c.recent.length ? escapeHtml(c.recent[c.recent.length - 1]) : '—';
+      return `
+        <tr>
+          <td class="cust-name">${escapeHtml(name)}</td>
+          <td class="num-col cust-count">
+            ${c.count}
+            <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${stop1};"></div></div>
+          </td>
+          <td class="cust-recent">${recent}</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function pulseOrb(){
+    orbWrap.style.transition = 'transform 0.18s ease';
+    orbWrap.style.transform = 'scale(1.06)';
+    setTimeout(() => { orbWrap.style.transform = 'scale(1)'; }, 180);
+  }
+
+  function spawnParticle(){
+    const rect = orbWrap.getBoundingClientRect();
+    const formRect = feedForm.getBoundingClientRect();
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    document.body.appendChild(particle);
+
+    const startX = formRect.right - 20;
+    const startY = formRect.top + formRect.height / 2;
+    const endX = rect.left + rect.width / 2;
+    const endY = rect.top + rect.height / 2;
+
+    particle.style.left = startX + 'px';
+    particle.style.top = startY + 'px';
+    particle.style.transition = 'transform 0.55s cubic-bezier(.4,0,.2,1), opacity 0.2s ease 0.4s';
+
+    requestAnimationFrame(() => {
+      particle.style.transform = `translate(${endX - startX}px, ${endY - startY}px) scale(0.4)`;
+      particle.style.opacity = '0';
+    });
+
+    setTimeout(() => {
+      particle.remove();
+      blobSeed += 0.6;
+      pulseOrb();
+      updateStatus();
+      renderRoster();
+    }, 550);
+  }
+
+  feedForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let name;
+    if (customerSelect.value === '__new__') {
+      name = newCustomerNameInput.value.trim();
+    } else {
+      name = customerSelect.value;
+    }
+    const bug = bugTextInput.value.trim();
+    if (!name || !bug) return;
+
+    if (!customers[name]) customers[name] = { count: 0, recent: [] };
+    customers[name].count += 1;
+    customers[name].recent.push(bug);
+    if (customers[name].recent.length > 10) customers[name].recent = customers[name].recent.slice(-10);
+
+    saveData();
+    spawnParticle();
+
+    renderCustomerOptions(name);
+    newCustomerField.style.display = 'none';
+    newCustomerNameInput.required = false;
+    newCustomerNameInput.value = '';
+    bugTextInput.value = '';
+    bugTextInput.focus();
+  });
+
+  resetBtn.addEventListener('click', () => {
+    if (!confirm('Clear all customers and bug counts? This cannot be undone.')) return;
+    customers = {};
+    blobSeed = 0;
+    saveData();
+    updateStatus();
+    renderRoster();
+    renderCustomerOptions('');
+    newCustomerField.style.display = 'none';
+  });
+
+  loadData();
+  updateStatus();
+  renderRoster();
+  renderCustomerOptions();
+})();
+</script>
+
+</body>
+</html>
